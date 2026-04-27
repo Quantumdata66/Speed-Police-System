@@ -6,8 +6,8 @@ import os
 app = Flask(__name__)
 
 
-TOKEN = "8655673601:AAEE8s8BlfJ2pfdAIt64WeNGv5QlG02PcBc"
-CHAT_ID = "6969432376"
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+CHAT_ID =  os.environ.get("CHAT_ID")
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
