@@ -1,0 +1,5 @@
+speed_log.txt 
+uploads/
+__pycache__/
+*.pyc
+.env
