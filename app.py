@@ -13,13 +13,30 @@ CHAT_ID =  os.environ.get("CHAT_ID")
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+
+def get_location():
+    try:
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+        if  "," in ip:
+            ip = ip.split(",")[0].strip()
+        res = requests.get(
+    f"https://ipapi.co/{ip}/json/",
+    timeout=3
+).json()
+        return f"{res.get('city')}, {res.get('country_name')}"
+    except:
+        return "Unknown Location"
+   
+location = get_location()
 def format_caption(speed):
+    lagos_time = datetime.now(pytz.timezone('Africa/Lagos')).strftime('%Y-%m-%d %H:%M:%S')
+    
     return f"""
 SPEED VIOLATION DETECTED
 
 Speed: {speed} km/h
-Location: FAE Building
-now = {datetime.now(pytz.timezone('Africa/Lagos')).strftime('%Y-%m-%d %H:%M:%S')}
+Location: {location}
+now = {lagos_time}
 
 
  Action: Image captured and logged
