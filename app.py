@@ -46,14 +46,16 @@ def send_to_telegram(image_path, speed):
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
-        image = request.files.get('image')
-        speed = request.form.get('speed')
+        image = request.data
+        speed = request.headers.get('speed')
 
         if not image or not speed:
             return jsonify({"error": "Missing image or speed"}), 400
 
-        image_path = os.path.join(UPLOAD_FOLDER, image.filename)
-        image.save(image_path)
+        filename = f"car_{speed}.jpg"
+        image_path = os.path.join(UPLOAD_FOLDER, filename)
+        with open(image_path, "wb") as f:
+            f.write(image)
 
         status_code = send_to_telegram(image_path, speed)
 
