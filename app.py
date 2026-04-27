@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import requests
 from datetime import datetime
+import pytz
 import os
 
 app = Flask(__name__)
@@ -18,14 +19,15 @@ SPEED VIOLATION DETECTED
 
 Speed: {speed} km/h
 Location: FAE Building
-Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+now = {datetime.now(pytz.timezone('Africa/Lagos')).strftime('%Y-%m-%d %H:%M:%S')}
+
 
  Action: Image captured and logged
 """
 
 def log_event(speed, status):
     with open("speed_log.txt", "a") as f:
-        f.write(f"{datetime.now()} | {status} | {speed} km/h\n")
+        f.write(f"{datetime.now(pytz.timezone('Africa/Lagos'))} | {status} | {speed} km/h\n")
 
 def send_to_telegram(image_path, speed):
     url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
